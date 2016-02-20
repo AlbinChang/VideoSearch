@@ -119,7 +119,7 @@ namespace 影视搜搜
             DeleteBrowserFeatureControlKey("FEATURE_BLOCK_INPUT_PROMPTS", fileName, 0);
         }
 
-        private bool block()
+        private void block()
         {
             try
             {
@@ -146,12 +146,12 @@ namespace 影视搜搜
                         {
                             pageWebBrowser.Stop();
                             search_baidu();
-                            return true;
+                            return ;
                         }
                     }
                 }
             }
-            return false;
+            return;
         }
 
         /// <summary>
@@ -343,13 +343,14 @@ namespace 影视搜搜
 
         int count_of_completed = 0;
 
-
+        private delegate void Block();    
         private void pageWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            count_of_completed++;                      
+            count_of_completed++;
 
             //屏蔽无关内容
-            block();           
+            //block();
+            this.Invoke(new Block(block));
 
             urlAddress = pageWebBrowser.Url.ToString();
             toolStripStatusView.Text = urlAddress + " 完毕" + "+" + count_of_completed;
